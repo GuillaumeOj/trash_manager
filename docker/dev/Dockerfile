@@ -8,5 +8,3 @@ COPY pyproject.toml poetry.lock ./
 COPY trash_manager ./trash_manager
 
 RUN poetry install --no-root
-
-ENTRYPOINT ["poetry", "run", "trash_manager/manage.py", "runserver"]
