@@ -18,8 +18,10 @@ services:
       - ./.env
     volumes:
       - web_data:/app
+    ports:
+      - 8000:8000
     restart: unless-stopped
-
+    command: ["poetry", "run", "trash_manager/manage.py", "runserver", "0.0.0.0:8000"]
 volumes:
   postgres_data:
   web_data:
