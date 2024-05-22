@@ -10,17 +10,12 @@ ROOT_DIR = BASE_DIR.parent
 CONFIG = dotenv_values(ROOT_DIR / ".env")
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = CONFIG["SECRET_KEY"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if CONFIG.get("DEBUG", "False") == "True" else False
 
 ENV_ALLOWED_HOSTS = CONFIG.get("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS = ENV_ALLOWED_HOSTS.split(",")
+ALLOWED_HOSTS = ENV_ALLOWED_HOSTS.split(",") if ENV_ALLOWED_HOSTS else []
 
 
 # Application definition
@@ -65,13 +60,14 @@ TEMPLATES = [
 WSGI_APPLICATION = "core.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": CONFIG["POSTGRES_DB"],
+        "USER": CONFIG["POSTGRES_USER"],
+        "PASSWORD": CONFIG["POSTGRES_PASSWORD"],
+        "HOST": CONFIG["POSTGRES_HOST"],
+        "PORT": CONFIG["POSTGRES_PORT"],
     }
 }
 
